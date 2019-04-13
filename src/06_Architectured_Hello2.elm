@@ -9,7 +9,7 @@ import Html.Events exposing (onClick)
 
 main : Program () Model Mesg
 main =
-    Browser.sandbox { init = model, view = view, update = update }
+    Browser.sandbox { init = init, view = view, update = update }
 
 
 
@@ -22,8 +22,8 @@ type alias Model =
     }
 
 
-model : Model
-model =
+init : Model
+init =
     { text = "Hello World"
     , size = 1
     }
@@ -45,19 +45,19 @@ type Mesg
 
 
 update : Mesg -> Model -> Model
-update msg umodel =
+update msg model =
     case msg of
         AddExcl ->
-            { umodel | text = umodel.text ++ "!" }
+            { model | text = model.text ++ "!" }
 
         RemoveExcl ->
-            { umodel | text = exclChecker umodel.text }
+            { model | text = exclChecker model.text }
 
         SizeUp ->
-            { umodel | size = umodel.size + 1 }
+            { model | size = model.size + 1 }
 
         SizeDown ->
-            { umodel | size = sizeChecker umodel.size }
+            { model | size = sizeChecker model.size }
 
 
 sizeChecker : Int -> Int
@@ -95,9 +95,9 @@ mySize size =
 
 
 view : Model -> Html Mesg
-view vmodel =
+view model =
     div []
-        [ div [ style "color" "teal", mySize vmodel.size ] [ text vmodel.text ]
+        [ div [ style "color" "teal", mySize model.size ] [ text model.text ]
         , button [ onClick AddExcl ] [ text "Add exclamation mark" ]
         , button [ onClick RemoveExcl ] [ text "Remove exclamation mark" ]
         , button [ onClick SizeUp ] [ text "+" ]

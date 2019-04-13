@@ -7,7 +7,7 @@ import Html.Events exposing (onInput)
 
 
 main =
-    Browser.sandbox { init = model, view = view, update = update }
+    Browser.sandbox { init = init, view = view, update = update }
 
 
 
@@ -18,8 +18,8 @@ type alias Model =
     { text : String }
 
 
-model : Model
-model =
+init : Model
+init =
     { text = "" }
 
 
@@ -38,13 +38,22 @@ update msg umodel =
             { umodel | text = txt }
 
 
+renderText : String -> Html Msg
+renderText str =
+    if String.length str > 9 then
+        div [ style "fontSize" "2em", style "color" "indianred" ] [ text str ]
+
+    else
+        div [ style "fontSize" "5em", style "color" "sandybrown" ] [ text str ]
+
+
 
 -- View
 
 
 view : Model -> Html Msg
-view vmodel =
+view model =
     div []
         [ input [ placeholder "Type text here", onInput Text ] []
-        , div [ style "fontSize" "3em", style "color" "sandybrown" ] [ text vmodel.text ]
+        , renderText model.text
         ]
